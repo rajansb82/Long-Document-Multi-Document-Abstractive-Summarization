@@ -1,0 +1,18 @@
+# save_rouge.py
+import json
+
+rouge_scores = {
+    "rouge1": float(sum(r1)/len(r1)),
+    "rouge2": float(sum(r2)/len(r2)),
+    "rougeL": float(sum(rL)/len(rL)),
+    "num_samples": len(r1),
+    "model": "allenai/led-base-16384",
+    "dataset": "NewsSumm",
+    "max_input_len": 4096,
+    "max_target_len": 256
+}
+
+with open("results/rouge_scores.json", "w") as f:
+    json.dump(rouge_scores, f, indent=2)
+
+print("Saved results/rouge_scores.json")
