@@ -1,0 +1,48 @@
+import pandas as pd
+import nltk
+from rouge_score import rouge_scorer
+
+nltk.download("punkt")
+
+print("LEAD-LENGTH BASELINE STARTED", flush=True)
+
+df = pd.read_csv("data/cleaned/val.csv").head(500)
+
+def lead_length(article, target_len):
+    sentences = nltk.sent_tokenize(str(article))
+    summary = []
+    word_count = 0
+    for s in sentences:
+        wc = len(s.split())
+        if word_count + wc > target_len:
+            break
+        summary.append(s)
+        word_count += wc
+    return " ".join(summary)
+
+preds, refs = [], []
+
+for _, row in df.iterrows():
+    target_len = len(str(row["Summary"]).split())
+    preds.append(lead_length(row["Article"], target_len))
+    refs.append(row["Summary"])
+
+scorer = rouge_scorer.RougeScorer(
+    ["rouge1", "rouge2", "rougeL"],
+    use_stemmer=True
+)
+
+r1 = r2 = rl = 0.0
+
+for p, r in zip(preds, refs):
+    s = scorer.score(r, p)
+    r1 += s["rouge1"].fmeasure
+    r2 += s["rouge2"].fmeasure
+    rl += s["rougeL"].fmeasure
+
+n = len(preds)
+print("ROUGE-1:", r1 / n)
+print("ROUGE-2:", r2 / n)
+print("ROUGE-L:", rl / n)
+
+print("LEAD-LENGTH BASELINE COMPLETED")
