@@ -1,0 +1,11 @@
+# save_predictions.py
+
+with open("results/predictions.txt", "w", encoding="utf-8") as f:
+    for i, (pred, ref) in enumerate(zip(predictions, references), 1):
+        f.write(f"--- Sample {i} ---\n")
+        f.write("PREDICTED SUMMARY:\n")
+        f.write(pred + "\n\n")
+        f.write("REFERENCE SUMMARY:\n")
+        f.write(ref + "\n\n")
+
+print("Saved results/predictions.txt")
