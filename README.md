@@ -81,8 +81,5 @@ Comparative analysis of sparse-attention Transformer models
 
 Citation
 
-If you use this project in your research or report, please cite the relevant LED and PRIMERA papers.
+If you use this project in your research or report, please cite the relevant LED papers.
 
-Author
-
-Rajan S B
