@@ -1,0 +1,39 @@
+import pandas as pd
+import nltk
+from rouge_score import rouge_scorer
+
+nltk.download("punkt")
+
+print("LEAD-3 BASELINE STARTED", flush=True)
+
+df = pd.read_csv("data/cleaned/val.csv").head(500)
+
+def lead3(article):
+    sentences = nltk.sent_tokenize(str(article))
+    return " ".join(sentences[:3])
+
+predictions = []
+references = []
+
+for _, row in df.iterrows():
+    predictions.append(lead3(row["Article"]))
+    references.append(row["Summary"])
+
+scorer = rouge_scorer.RougeScorer(
+    ["rouge1", "rouge2", "rougeL"],
+    use_stemmer=True
+)
+
+scores = {"rouge1": [], "rouge2": [], "rougeL": []}
+
+for pred, ref in zip(predictions, references):
+    score = scorer.score(ref, pred)
+    scores["rouge1"].append(score["rouge1"].fmeasure)
+    scores["rouge2"].append(score["rouge2"].fmeasure)
+    scores["rougeL"].append(score["rougeL"].fmeasure)
+
+print("ROUGE-1:", sum(scores["rouge1"]) / len(scores["rouge1"]))
+print("ROUGE-2:", sum(scores["rouge2"]) / len(scores["rouge2"]))
+print("ROUGE-L:", sum(scores["rougeL"]) / len(scores["rougeL"]))
+
+print("LEAD-3 BASELINE COMPLETED")
