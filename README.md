@@ -1,7 +1,7 @@
 # Long-Document-Multi-Document-Abstractive-Summarization
 
 
-This repository contains the complete project pipeline for long-document and multi-document abstractive summarization using sparse-attention Transformer models. The project focuses on efficient handling of long sequences and multi-document inputs with LED and PRIMERA-style architectures.
+This repository contains the complete project pipeline for long-document and multi-document abstractive summarization using sparse-attention Transformer models. The project focuses on efficient handling of long sequences and multi-document inputs with LED -style architectures.
 
 Project Overview
 
