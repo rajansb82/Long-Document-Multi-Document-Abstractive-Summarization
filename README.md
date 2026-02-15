@@ -7,31 +7,6 @@ Project Overview
 
 Long-document summarization is challenging due to quadratic attention cost and loss of global context in standard Transformer models. This project implements a data-centric pipeline and model-level experiments for multi-document abstractive summarization, including cleaning, clustering, filtering, model inference, and evaluation.
 
-Project Structure
-Project 1/
-│
-├── data/
-│   ├── raw/                 # Clustered raw datasets (JSON)
-│   ├── Cleaned/             # Cleaned NewsSumm dataset (CSV/XLSX)
-│   ├── train.csv            # Training split
-│   └── val.csv              # Validation split
-│
-├── scripts/
-│   ├── clean_newssumm.py
-│   ├── create_clusters.py
-│   ├── filter_multidoc.py
-│   ├── prepare_for_model.py
-│   ├── dataset_stats.py
-│   ├── evaluate_rouge.py
-│   ├── test_led_inference.py
-│   └── primera_inference.py
-│
-├── models/
-│   ├── primera/
-│   └── category_aware_led.py
-│
-└── README.md
-
 Pipeline
 
 Raw NewsSumm
