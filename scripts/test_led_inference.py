@@ -2,30 +2,34 @@ import json
 import torch
 from transformers import LEDTokenizer, LEDForConditionalGeneration
 
-# Load model and tokenizer
+# Load LED model
 model_name = "allenai/led-base-16384"
+
 tokenizer = LEDTokenizer.from_pretrained(model_name)
 model = LEDForConditionalGeneration.from_pretrained(model_name)
 
 model.eval()
 
-# Load dataset
-data_file = r"C:\Users\rajan\Music\Project 1\data\raw\dataset_model_ready.json"
+# Load MULTI DOCUMENT dataset
+data_file = "../raw/multidoc_dataset.json"
 
-with open(data_file, "r", encoding="utf-8") as f:
+with open(data_file,"r",encoding="utf-8") as f:
     data = json.load(f)
 
-# Take only 5 samples
+print("Total samples:",len(data))
+
+# Test only first 5 samples
 samples = data[:5]
 
-for i, sample in enumerate(samples, 1):
-    input_text = sample["input_text"][:8000]  # limit length for safety
+for i,sample in enumerate(samples):
+
+    article = sample["input_text"]
 
     inputs = tokenizer(
-        input_text,
-        return_tensors="pt",
+        article,
+        max_length=4096,
         truncation=True,
-        max_length=4096
+        return_tensors="pt"
     )
 
     with torch.no_grad():
@@ -35,9 +39,12 @@ for i, sample in enumerate(samples, 1):
             num_beams=4
         )
 
-    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    summary = tokenizer.decode(summary_ids[0],skip_special_tokens=True)
 
-    print(f"\n===== SAMPLE {i} =====")
-    print("MODEL SUMMARY:\n", summary)
-    print("\nREFERENCE SUMMARY:\n", sample["target_text"][:500])
-
+    print("\n---------------------------")
+    print("INPUT (MULTI DOC):")
+    print(article[:500])
+    print("\nMODEL SUMMARY:")
+    print(summary)
+    print("\nREFERENCE SUMMARY:")
+    print(sample["target_text"])
